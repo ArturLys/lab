@@ -23,17 +23,38 @@ typedef vector<pdd> vdd;
 #define ss second 
 #define INF 2e18 
 #define all(x) (x).begin(), (x).end() 
-#include "LogCon.h"
+#include "Price.h"
 
+Price::Price(int h, short k) : hryvnias(h), kop(k) {}
 
-vi bubble(vi) {
-	return {};
+Price Price::operator+(const Price& other) const {
+    int totalkop = (hryvnias + other.hryvnias) * 100 + (kop + other.kop);
+    return Price(totalkop / 100, totalkop % 100);
 }
 
-vi insertion(vi) {
-	return {};
+Price Price::operator*(int quantity) const {
+    int totalkop = (hryvnias * 100 + kop) * quantity;
+    return Price(totalkop / 100, totalkop % 100);
 }
 
-vi selection(vi) {
-	return {};
+void Price::roundToNearest10() {
+    kop = round(kop / 10.0) * 10;
+}
+
+void Price::print() const {
+    cout << hryvnias << " UAH " << kop << " kop" << endl;
+}
+
+void readPricesFromFile(const string& filename, Price& total) {
+    ifstream file(filename);
+    if (!file) {
+        cerr << "Error opening file!" << endl;
+        return;
+    }
+
+    int h, k, q;
+    while (file >> h >> k >> q) {
+        Price item(h, k);
+        total = total + (item * q);
+    }
 }

@@ -20,8 +20,17 @@ typedef vector<pdd> vdd;
 #define ss second 
 #define INF 2e18 
 #define all(x) (x).begin(), (x).end() 
-#include "LogCon.h"
+#include "Price.h"
 
-vi bubble(vi);
-vi insertion(vi);
-vi selection(vi);
+struct Price {
+    int hryvnias;
+    short kop;
+
+    Price(int h = 0, short k = 0);
+    Price operator+(const Price &other) const;
+    Price operator*(int quantity) const;
+    void roundToNearest10();
+    void print() const;
+};
+
+void readPricesFromFile(const string &filename, Price &total);
