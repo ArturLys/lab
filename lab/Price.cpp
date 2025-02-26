@@ -1,48 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
-template <typename T, size_t N> int SIZE(const T(&t)[N]) { return N; } template<typename T> int SIZE(const T& t) { return t.size(); } string to_string(const string s, int x1 = 0, int x2 = 1e9) { return '"' + ((x1 < s.size()) ? s.substr(x1, x2 - x1 + 1) : "") + '"'; } string to_string(const char* s) { return to_string((string)s); } string to_string(const bool b) { return (b ? "1" : "0"); } string to_string(const char c) { return string({ c }); } template<size_t N> string to_string(const bitset<N>& b, int x1 = 0, int x2 = 1e9) { string t = ""; for (int __iii__ = min(x1, SIZE(b)), __jjj__ = min(x2, SIZE(b) - 1); __iii__ <= __jjj__; ++__iii__) { t += b[__iii__] + '0'; } return '"' + t + '"'; } template <typename A, typename... C> string to_string(const A(&v), int x1 = 0, int x2 = 1e9, C... coords); int l_v_l_v_l = 0, t_a_b_s = 0; template <typename A, typename B> string to_string(const pair<A, B>& p) { l_v_l_v_l++; string res = "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; l_v_l_v_l--; return res; } template <typename A, typename... C> string to_string(const A(&v), int x1, int x2, C... coords) { int rnk = rank<A>::value; string tab(t_a_b_s, ' '); string res = ""; bool first = 1; if (l_v_l_v_l == 0) res += '\n'; res += tab + "["; x1 = min(x1, SIZE(v)), x2 = min(x2, SIZE(v)); auto l = begin(v); advance(l, x1); auto r = l; advance(r, (x2 - x1) + (x2 < SIZE(v))); for (auto e = l; e != r; e = next(e)) { if (!first) { res += ", "; } first = 0; l_v_l_v_l++; if (e != l) { if (rnk > 1) { res += '\n'; t_a_b_s = l_v_l_v_l; }; } else { t_a_b_s = 0; } res += to_string(*e, coords...); l_v_l_v_l--; } res += "]"; if (l_v_l_v_l == 0) res += '\n'; return res; } void dbgm() { ; } template<typename Heads, typename... Tails> void dbgm(Heads H, Tails... T) { cout << to_string(H) << " "; dbgm(T...); }
-#define debug(...) cout << "" << #__VA_ARGS__ << " : "; dbgm(__VA_ARGS__); cout << endl
-typedef long double ld;
-typedef pair<int, int> pii;
-typedef pair<double, double> pdd;
-typedef vector<int> vi;
-typedef vector<double> vd;
-typedef vector<bool> vb;
-typedef vector<vector<int>> vvi;
-typedef vector<vector<double>> vvd;
-typedef vector<vector<pii>> vvii;
-typedef vector<vector<pdd>> vvdd;
-typedef vector<pii> vii;
-typedef vector<pdd> vdd;
-#define gcd(x, y) __gcd(x, y)
-#define lcm(x, y) (x*(y/gcd(x,y))
-#define mp make_pair 
-#define pb push_back
-#define ff first 
-#define ss second 
-#define INF 2e18 
-#define all(x) (x).begin(), (x).end() 
 #include "Price.h"
 
-Price::Price(int h, short k) : hryvnias(h), kop(k) {}
-
-Price Price::operator+(const Price& other) const {
-    int totalkop = (hryvnias + other.hryvnias) * 100 + (kop + other.kop);
-    return Price(totalkop / 100, totalkop % 100);
+Price roundToNearest10(Price Price) {
+    Price.kop = round(Price.kop / 10.0) * 10;
+    return Price;
 }
 
-Price Price::operator*(int quantity) const {
-    int totalkop = (hryvnias * 100 + kop) * quantity;
-    return Price(totalkop / 100, totalkop % 100);
-}
-
-void Price::roundToNearest10() {
-    kop = round(kop / 10.0) * 10;
-}
-
-void Price::print() const {
-    cout << hryvnias << " UAH " << kop << " kop" << endl;
+void print(Price Price) {
+    cout << Price.hryvnias+Price.kop/100 << " UAH " << Price.kop%100 << " kop" << endl;
 }
 
 void readPricesFromFile(const string& filename, Price& total) {
@@ -54,7 +20,7 @@ void readPricesFromFile(const string& filename, Price& total) {
 
     int h, k, q;
     while (file >> h >> k >> q) {
-        Price item(h, k);
-        total = total + (item * q);
+        total.kop += k*q;
+        total.hryvnias += h*q;
     }
 }

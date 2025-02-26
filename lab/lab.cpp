@@ -6,10 +6,10 @@ int32_t main() {
     Price total;
     readPricesFromFile("prices.txt", total);
     cout << "Total amount: ";
-    total.print();
-    total.roundToNearest10();
+    print(total);
+    total = roundToNearest10(total);
     cout << "Amount to be paid (after rounding): ";
-    total.print();
+    print(total);
     return 0;
 
 }
