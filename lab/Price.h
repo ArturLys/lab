@@ -2,7 +2,7 @@
 
 struct Price {
     int hryvnias = 0;
-    short kop = 0;
+    int kop = 0;
 };
 
 void print(Price Price);
